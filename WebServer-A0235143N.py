@@ -1,3 +1,4 @@
+from sqlite3 import connect
 import sys, socket, os
 from typing import Literal, TypeAlias
 from dataclasses import dataclass, field
@@ -22,17 +23,17 @@ def main():
 
         while True:
             connection, address = s.accept()
-            with connection:
-                buffer = b""
-                while True:
-                    chunk = connection.recv(1024)
-                    if not chunk:
-                        break  # Client disconnected
-                    buffer += chunk
-                    req_list, buffer = SimpleHTTPRequest.process_chunk(chunk)
-                    for req in req_list:
-                        res = handle_request(req, key_value_store, counter_store)
-                        connection.send(res.encode())
+            buffer = b""
+            while True:
+                chunk = connection.recv(1024)
+                if not chunk:
+                    connection.close()  # Client disconnected
+                    break
+                buffer += chunk
+                req_list, buffer = SimpleHTTPRequest.process_chunk(chunk)
+                for req in req_list:
+                    res = handle_request(req, key_value_store, counter_store)
+                    connection.send(res.encode())
 
 
 def test_process_chunks(chunks: list[bytes]) -> list[bytes]:
