@@ -112,6 +112,8 @@ def handle_key_requests(
             if key not in key_value_store:
                 return SimpleHTTPResponse(404, "NotFound")
 
+            data = key_value_store[key]
+
             is_temp_key = key in counter_store
             if is_temp_key:
                 assert counter_store[key] > 0
@@ -120,7 +122,6 @@ def handle_key_requests(
                     del counter_store[key]
                     del key_value_store[key]
 
-            data = key_value_store[key]
             return SimpleHTTPResponse(200, "OK").with_body(data)
 
         case "DELETE":
