@@ -30,7 +30,7 @@ def main():
                     connection.close()  # Client disconnected
                     break
                 buffer += chunk
-                req_list, buffer = SimpleHTTPRequest.process_chunk(chunk)
+                req_list, buffer = SimpleHTTPRequest.process_chunk(buffer)
                 for req in req_list:
                     res = handle_request(req, key_value_store, counter_store)
                     connection.send(res.encode())
