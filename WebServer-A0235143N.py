@@ -182,7 +182,6 @@ def handle_counter_requests(
 
             count = counter_store[key]
             del counter_store[key]
-            del key_value_store[key]
             return SimpleHTTPResponse(200, "OK").with_body(str(count).encode())
 
 
