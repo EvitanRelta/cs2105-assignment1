@@ -236,7 +236,7 @@ class SimpleHTTPRequest:
             # Last request's body is incomplete.
             body_len = int(bodiless_req.headers["CONTENT-LENGTH"])
             if len(rest) < body_len:
-                return req_list, raw_header + rest
+                return req_list, raw_header + b"  " + rest
 
             # Request has complete header + body.
             raw_body, rest = rest[:body_len], rest[body_len:]
