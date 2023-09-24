@@ -1,13 +1,9 @@
-from sqlite3 import connect
-import sys, socket, os
+import sys, socket
 from typing import Literal, TypeAlias
 from dataclasses import dataclass, field
 
 HOST = "127.0.0.1"
 MAX_NUM_CONCURRENT_CONNECTIONS = 1
-MAX_SEGMENT_DELAY_MS = 1000
-MAX_BODY_BYTES = 5 * (10**6)
-MAX_REQUEST_BYTES = 2 * MAX_BODY_BYTES  # With some leeway for header size.
 
 Method: TypeAlias = Literal["GET", "POST", "DELETE"]
 VALID_METHODS: list[Method] = ["GET", "POST", "DELETE"]
