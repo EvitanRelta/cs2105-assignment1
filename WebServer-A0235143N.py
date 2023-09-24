@@ -65,9 +65,9 @@ def handle_request(
     key_value_store: dict[str, bytes],
     counter_store: dict[str, int],
 ) -> "SimpleHTTPResponse":
-    prefix, key = os.path.dirname(req.path), os.path.basename(req.path)
-    assert prefix[0] == "/" and prefix.count("/") == 1
-    assert "/" not in key
+    prefix, key = req.path[1:].split("/", 1)
+    assert prefix.count("/") == 0
+    prefix = "/" + prefix
 
     res: SimpleHTTPResponse = None  # type: ignore
     match prefix:
