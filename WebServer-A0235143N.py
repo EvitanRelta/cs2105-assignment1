@@ -98,8 +98,8 @@ def handle_key_requests(
 
             # Update.
             is_temp_key = key in counter_store
-            assert counter_store[key] > 0
             if is_temp_key:
+                assert counter_store[key] > 0
                 return SimpleHTTPResponse(405, "MethodNotAllowed")
 
             key_value_store[key] = req.body
@@ -112,8 +112,8 @@ def handle_key_requests(
                 return SimpleHTTPResponse(404, "NotFound")
 
             is_temp_key = key in counter_store
-            assert counter_store[key] > 0
             if is_temp_key:
+                assert counter_store[key] > 0
                 counter_store[key] -= 1
                 if counter_store[key] <= 0:
                     del counter_store[key]
@@ -129,8 +129,8 @@ def handle_key_requests(
                 return SimpleHTTPResponse(404, "NotFound")
 
             is_temp_key = key in counter_store
-            assert counter_store[key] > 0
             if is_temp_key:
+                assert counter_store[key] > 0
                 return SimpleHTTPResponse(405, "MethodNotAllowed")
 
             data = key_value_store[key]
