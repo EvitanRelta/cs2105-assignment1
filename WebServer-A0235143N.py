@@ -36,24 +36,6 @@ def main():
                     connection.send(res.encode())
 
 
-def test_process_chunks(chunks: list[bytes]) -> list[bytes]:
-    """For testing request handling w/o TCP. Not used in my solution."""
-    key_value_store: dict[str, bytes] = {}
-    counter_store: dict[str, int] = {}
-
-    buffer = b""
-    output: list[bytes] = []
-    while len(chunks) > 0:
-        chunk = chunks.pop(0)
-        buffer += chunk
-        req_list, buffer = SimpleHTTPRequest.process_chunk(buffer)
-        for req in req_list:
-            res = handle_request(req, key_value_store, counter_store)
-            output.append(res.encode())
-
-    return output
-
-
 # ==============================================================================
 #                                HELPER FUNCTIONS
 # ==============================================================================
