@@ -26,7 +26,7 @@ def main():
                     connection.close()  # Client disconnected
                     break
                 buffer += chunk
-                req_list, buffer = SimpleHTTPRequest.process_chunk(buffer)
+                req_list, buffer = SimpleHTTPRequest.parse_chunk(buffer)
                 for req in req_list:
                     res = handle_request(req, key_value_store, counter_store)
                     connection.send(res.encode())
@@ -201,7 +201,7 @@ class SimpleHTTPRequest:
         )
 
     @classmethod
-    def process_chunk(cls, chunk: bytes) -> tuple[list["SimpleHTTPRequest"], bytes]:
+    def parse_chunk(cls, chunk: bytes) -> tuple[list["SimpleHTTPRequest"], bytes]:
         """Parse a chunk (or multiple concatenated chunks), converting all the
         completed requests into `SimpleHTTPRequest` instances and returns them
         along with the bytes of the last incomplete request (if any).
