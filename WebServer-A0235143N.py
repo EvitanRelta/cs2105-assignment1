@@ -89,8 +89,8 @@ def handle_key_requests(
     match req.method:
         case "POST":
             assert len(req.body) > 0
-            assert "Content-Length" in req.headers
-            assert int(req.headers["Content-Length"]) == len(req.body)
+            assert "CONTENT-LENGTH" in req.headers
+            assert int(req.headers["CONTENT-LENGTH"]) == len(req.body)
 
             # Insertion.
             if key not in key_value_store:
@@ -148,8 +148,8 @@ def handle_counter_requests(
     match req.method:
         case "POST":
             assert len(req.body) > 0
-            assert "Content-Length" in req.headers
-            assert int(req.headers["Content-Length"]) == len(req.body)
+            assert "CONTENT-LENGTH" in req.headers
+            assert int(req.headers["CONTENT-LENGTH"]) == len(req.body)
             assert int(req.body) > 0
 
             # Insertion.
@@ -209,13 +209,13 @@ class SimpleHTTPRequest:
         assert method in VALID_METHODS
         path = header_fields[1]  # Case-sensitive
         optional_header_substrings = header_fields[2:]
+        opt_header_names = [x.upper() for x in optional_header_substrings[0::2]]
+        opt_header_values = optional_header_substrings[1::2]
 
         return SimpleHTTPRequest(
             method=method,
             path=path,
-            headers=dict(
-                zip(optional_header_substrings[0::2], optional_header_substrings[1::2])
-            ),
+            headers=dict(zip(opt_header_names, opt_header_values)),
             body=b"",
         )
 
@@ -228,13 +228,13 @@ class SimpleHTTPRequest:
             bodiless_req = cls._decode_headers_only(raw_header)
 
             # Request has complete header, with no additional body.
-            if "Content-Length" not in bodiless_req.headers:
+            if "CONTENT-LENGTH" not in bodiless_req.headers:
                 req_list.append(bodiless_req)
                 splitted_chunk = rest.split(b"  ", 1)
                 continue
 
             # Last request's body is incomplete.
-            body_len = int(bodiless_req.headers["Content-Length"])
+            body_len = int(bodiless_req.headers["CONTENT-LENGTH"])
             if len(rest) < body_len:
                 return req_list, raw_header + rest
 
@@ -256,7 +256,7 @@ class SimpleHTTPResponse:
 
     def with_body(self, body: bytes) -> "SimpleHTTPResponse":
         self.body = body
-        self.headers["Content-Length"] = str(len(body))
+        self.headers["CONTENT-LENGTH"] = str(len(body))
         return self
 
     def encode(self) -> bytes:
