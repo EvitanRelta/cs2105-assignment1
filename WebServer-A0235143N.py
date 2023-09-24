@@ -88,7 +88,6 @@ def handle_key_requests(
 ) -> "SimpleHTTPResponse":
     match req.method:
         case "POST":
-            assert len(req.body) > 0
             assert "CONTENT-LENGTH" in req.headers
             assert int(req.headers["CONTENT-LENGTH"]) == len(req.body)
 
@@ -151,7 +150,7 @@ def handle_counter_requests(
             assert len(req.body) > 0
             assert "CONTENT-LENGTH" in req.headers
             assert int(req.headers["CONTENT-LENGTH"]) == len(req.body)
-            assert int(req.body) > 0
+            assert int(req.body) >= 0
 
             # Insertion.
             if key not in key_value_store:
