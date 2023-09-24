@@ -188,7 +188,9 @@ class SimpleHTTPRequest:
         assert method in VALID_METHODS
         path = header_fields[1]  # Case-sensitive
         optional_header_substrings = header_fields[2:]
-        opt_header_names = [x.upper() for x in optional_header_substrings[0::2]]
+        opt_header_names = [
+            x.upper() for x in optional_header_substrings[0::2]
+        ]  # Case-insensitive
         opt_header_values = optional_header_substrings[1::2]
 
         return SimpleHTTPRequest(
@@ -200,6 +202,14 @@ class SimpleHTTPRequest:
 
     @classmethod
     def process_chunk(cls, chunk: bytes) -> tuple[list["SimpleHTTPRequest"], bytes]:
+        """Parse a chunk (or multiple concatenated chunks), converting all the
+        completed requests into `SimpleHTTPRequest` instances and returns them
+        along with the bytes of the last incomplete request (if any).
+
+        Returns:
+            tuple[list[SimpleHTTPRequest], bytes]: A list of all the completed \
+                request, the bytes of the last incomplete request (if any).
+        """
         req_list: list[SimpleHTTPRequest] = []
         splitted_chunk = chunk.split(b"  ", 1)
         while len(splitted_chunk) > 1:
