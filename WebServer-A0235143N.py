@@ -1,6 +1,6 @@
 import sys, socket, os
 from typing import Literal, TypeAlias
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 HOST = "127.0.0.1"
 MAX_NUM_CONCURRENT_CONNECTIONS = 1
@@ -234,7 +234,7 @@ class SimpleHTTPRequest:
 class SimpleHTTPResponse:
     status: int
     status_text: str
-    headers: dict[str, str] = {}
+    headers: dict[str, str] = field(default_factory=dict)
     body: bytes = b""
 
     def with_body(self, body: bytes) -> "SimpleHTTPResponse":
