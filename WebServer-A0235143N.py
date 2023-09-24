@@ -170,7 +170,7 @@ def handle_counter_requests(
 
             if key in counter_store:
                 count = counter_store[key]
-                return SimpleHTTPResponse(200, "OK").with_body(bytes(count))
+                return SimpleHTTPResponse(200, "OK").with_body(str(count).encode())
 
             return SimpleHTTPResponse(200, "OK").with_body(b"Infinity")
 
@@ -183,7 +183,7 @@ def handle_counter_requests(
             count = counter_store[key]
             del counter_store[key]
             del key_value_store[key]
-            return SimpleHTTPResponse(200, "OK").with_body(bytes(count))
+            return SimpleHTTPResponse(200, "OK").with_body(str(count).encode())
 
 
 # ==============================================================================
