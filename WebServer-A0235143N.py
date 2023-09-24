@@ -265,7 +265,7 @@ class SimpleHTTPResponse:
             f"{key} {value}" for key, value in self.headers.items()
         )
         return (
-            f"{self.status} {self.status_text} {encoded_headers}  {self.body.decode()}"
+            f"{self.status} {self.status_text}{(' ' + encoded_headers) if encoded_headers else ''}  {self.body.decode()}"
         ).encode()
 
 
