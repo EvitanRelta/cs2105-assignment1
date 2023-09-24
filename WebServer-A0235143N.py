@@ -37,6 +37,7 @@ def main():
 
 
 def test_process_chunks(chunks: list[bytes]) -> list[bytes]:
+    """For testing request handling w/o TCP. Not used in my solution."""
     key_value_store: dict[str, bytes] = {}
     counter_store: dict[str, int] = {}
 
